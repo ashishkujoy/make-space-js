@@ -7,6 +7,10 @@ export class Time {
   toMinutes() {
     return (this.hours * 60) + this.minutes;
   }
+
+  toString() {
+    return `${this.hours}:${this.minutes}`;
+  }
 }
 
 export class TimeSlot {
@@ -28,5 +32,9 @@ export class TimeSlot {
     const timeInMin = time.toMinutes();
 
     return startTimeInMin <= timeInMin && timeInMin <= endTimeInMin;
+  }
+
+  toString() {
+    return `${this.start}-${this.end}`;
   }
 }

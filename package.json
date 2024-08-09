@@ -1,0 +1,19 @@
+{
+  "name": "geektrust",
+  "version": "1.0.0",
+  "description": "geektrust-project",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node geektrust.js",
+    "test": "mocha --recursive"
+  },
+  "author": "geektrust",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^10.0.0"
+  },
+  "devDependencies": {
+    "chai": "^5.1.1"
+  }
+}

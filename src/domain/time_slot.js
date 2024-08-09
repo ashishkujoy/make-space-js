@@ -8,6 +8,11 @@ export class Time {
     return (this.hours * 60) + this.minutes;
   }
 
+  equals(other) {
+    if (!(other instanceof Time)) return false;
+    return this.hours === other.hours && this.minutes === other.minutes;
+  }
+
   toString() {
     return `${this.hours}:${this.minutes}`;
   }
@@ -20,8 +25,9 @@ export class TimeSlot {
   }
 
   overlaps(otherTimeSlot) {
-    const startTimeOverlaps = this.contains(otherTimeSlot.start);
-    const endTimeOverlaps = this.contains(otherTimeSlot.end);
+    if (this.equals(otherTimeSlot)) return true;
+    const startTimeOverlaps = this.contains(otherTimeSlot.start) || otherTimeSlot.contains(this.start);
+    const endTimeOverlaps = this.contains(otherTimeSlot.end) || otherTimeSlot.contains(this.end);
 
     return startTimeOverlaps || endTimeOverlaps;
   }
@@ -35,7 +41,12 @@ export class TimeSlot {
     const endTimeInMin = this.end.toMinutes();
     const timeInMin = time.toMinutes();
 
-    return startTimeInMin <= timeInMin && timeInMin <= endTimeInMin;
+    return startTimeInMin < timeInMin && timeInMin < endTimeInMin;
+  }
+
+  equals(other) {
+    if (!(other instanceof TimeSlot)) return false;
+    return this.start.equals(other.start) && this.end.equals(other.end);
   }
 
   toString() {

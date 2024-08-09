@@ -1,15 +1,15 @@
-import { NoVacantRoom } from "./errors.js";
+import { InvalidTimeSlot, NoVacantRoom } from "./errors.js";
 
 export class MeetingRoomManager {
-  constructor(meetingRooms, minRoomOccupancy, maxRoomOccupancy) {
+  constructor(meetingRooms, bookingRules) {
     this.meetingRooms = meetingRooms;
-    this.minRoomOccupancy = minRoomOccupancy;
-    this.maxRoomOccupancy = maxRoomOccupancy;
+    this.bookingRules = bookingRules;
   }
 
   book(teamSize, timeSlot) {
-    if (!this.#isAccomodableTeamSize(teamSize)) {
-      return this.#noVaccantRoomResponse();
+    const validationError = this.#validateRequest(teamSize, timeSlot);
+    if (validationError) {
+      return { success: false, roomName: undefined, error: validationError }
     }
     const room = this.meetingRooms.find(room => {
       return room.book(teamSize, timeSlot).success;
@@ -18,8 +18,19 @@ export class MeetingRoomManager {
     return room ? this.#roomResponse(room.name) : this.#noVaccantRoomResponse();
   }
 
+  #validateRequest(teamSize, timeSlot) {
+    if (!this.#isAccomodableTeamSize(teamSize)) return new NoVacantRoom();
+    if (!this.#isValidTimeSlot(timeSlot)) return new InvalidTimeSlot();
+  }
+
+  #isValidTimeSlot(timeSlot) {
+    const { bookingIntervalInMinutes } = this.bookingRules;
+    return [timeSlot.start.minutes, timeSlot.end.minutes].every(m => m % bookingIntervalInMinutes === 0);
+  }
+
   #isAccomodableTeamSize(teamSize) {
-    return teamSize >= this.minRoomOccupancy && teamSize <= this.maxRoomOccupancy
+    const { minRoomOccupancy, maxRoomOccupancy } = this.bookingRules;
+    return teamSize >= minRoomOccupancy && teamSize <= maxRoomOccupancy;
   }
 
   #roomResponse(roomName) {

@@ -18,3 +18,9 @@ export class NoVacantRoom extends Error {
     super("No vacant room");
   }
 }
+
+export class InvalidTimeSlot extends Error {
+  constructor() {
+    super("Invalid timeslot");
+  }
+}

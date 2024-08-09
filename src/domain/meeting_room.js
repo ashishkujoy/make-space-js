@@ -8,12 +8,12 @@ export default class MeetingRoom {
     this.bookedSlots = [];
   }
 
-  canAccomodate(teamSize) {
+  canAccommodate(teamSize) {
     return this.capacity >= teamSize;
   }
 
   book(teamSize, timeSlot) {
-    if (!this.canAccomodate(teamSize)) {
+    if (!this.canAccommodate(teamSize)) {
       return {
         success: false,
         error: new NotEnoughRoomCapacityError(this.capacity, teamSize),

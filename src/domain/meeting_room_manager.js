@@ -19,7 +19,7 @@ export class MeetingRoomManager {
   }
 
   #validateRequest(teamSize, timeSlot) {
-    if (!this.#isAccomodableTeamSize(teamSize)) return new NoVacantRoom();
+    if (!this.#isAccommodableTeamSize(teamSize)) return new NoVacantRoom();
     if (!this.#isValidTimeSlot(timeSlot)) return new InvalidTimeSlot();
   }
 
@@ -28,7 +28,7 @@ export class MeetingRoomManager {
     return [timeSlot.start.minutes, timeSlot.end.minutes].every(m => m % bookingIntervalInMinutes === 0);
   }
 
-  #isAccomodableTeamSize(teamSize) {
+  #isAccommodableTeamSize(teamSize) {
     const { minRoomOccupancy, maxRoomOccupancy } = this.bookingRules;
     return teamSize >= minRoomOccupancy && teamSize <= maxRoomOccupancy;
   }

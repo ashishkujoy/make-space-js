@@ -18,7 +18,7 @@ describe("Meeting Room Manager", () => {
   };
 
   describe("book", () => {
-    it("should book a room for given time slot and team size", () => {
+    it("should book a room for available time slot and team size", () => {
       const manager = new MeetingRoomManager([
         new MeetingRoom("C-Cave", 3, bufferTime),
         new MeetingRoom("D-Tower", 7, bufferTime),

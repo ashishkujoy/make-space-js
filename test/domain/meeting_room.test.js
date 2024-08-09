@@ -4,25 +4,25 @@ import { Time, TimeSlot } from "../../src/domain/time_slot.js";
 import { NotEnoughRoomCapacityError, TimeSlotNotAvailableError } from "../../src/domain/errors.js";
 
 describe("Meeting Room", () => {
-  describe("Accomodation", () => {
-    it("should accomodate a team of size lesser than the room capacity", () => {
+  describe("Accommodation", () => {
+    it("room should accommodate team smaller than capacity", () => {
       const meetingRoom = new MeetingRoom("test", 4, []);
-      assert.isTrue(meetingRoom.canAccomodate(3));
+      assert.isTrue(meetingRoom.canAccommodate(3));
     });
 
-    it("should accomodate a team of size equal to the room capacity", () => {
+    it("should accommodate a team of size equal to the room capacity", () => {
       const meetingRoom = new MeetingRoom("test", 4, []);
-      assert.isTrue(meetingRoom.canAccomodate(4));
+      assert.isTrue(meetingRoom.canAccommodate(4));
     });
 
-    it("should not accomodate a team of size equal greater than room capacity", () => {
+    it("should not accommodate a team of size equal greater than the room capacity", () => {
       const meetingRoom = new MeetingRoom("test", 4, []);
-      assert.isFalse(meetingRoom.canAccomodate(5));
+      assert.isFalse(meetingRoom.canAccommodate(5));
     });
   });
 
   describe("Book", () => {
-    it("should not allow booking room having capacity less than team size", () => {
+    it("should not allow booking room for teams larger than the capacity o", () => {
       const meetingRoom = new MeetingRoom("test", 3, []);
       const timeSlot = new TimeSlot(new Time(10, 0), new Time(10, 15));
       const booking = meetingRoom.book(4, timeSlot);
@@ -34,7 +34,7 @@ describe("Meeting Room", () => {
       });
     });
 
-    it("should allow booking room having capacity for the team size", () => {
+    it("should allow booking room for teams equal to the capacity", () => {
       const meetingRoom = new MeetingRoom("test", 3, []);
       const timeSlot = new TimeSlot(new Time(10, 0), new Time(10, 15));
       const booking = meetingRoom.book(3, timeSlot);

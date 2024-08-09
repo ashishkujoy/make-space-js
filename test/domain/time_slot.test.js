@@ -3,75 +3,75 @@ import { Time, TimeSlot } from "../../src/domain/time_slot.js";
 
 describe("Time Slot", () => {
   describe("Contains", () => {
-    it("should not contain starting time", () => {
+    it("should not contain the start of the timeslot", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(10, 30));
       assert.isFalse(timeSlot.contains(new Time(10, 15)));
     });
 
-    it("should not contain end time", () => {
+    it("should not contain the end of the timeslot", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(10, 30));
       assert.isFalse(timeSlot.contains(new Time(10, 30)));
     });
 
-    it("should contain time between start and end", () => {
+    it("should contain time within the timeslot", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(10, 30));
       assert.isTrue(timeSlot.contains(new Time(10, 20)));
     });
 
-    it("should contain time between start and end when hours are differen", () => {
+    it("should contain time within the timeslot accross different hours", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       assert.isTrue(timeSlot.contains(new Time(11, 0)));
     });
 
-    it("should not contain time less than start time", () => {
+    it("should not contain time before start of the timeslot", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       assert.isFalse(timeSlot.contains(new Time(10, 10)));
     });
 
-    it("should not contain time greater than end time", () => {
+    it("should not contain time after end of the timeslot", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       assert.isFalse(timeSlot.contains(new Time(11, 40)));
     });
   });
 
   describe("Overlap", () => {
-    it("should overlap with same timeslot", () => {
+    it("identical timeslot should overlap", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       const otherSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       assert.isTrue(timeSlot.overlaps(otherSlot));
     });
 
-    it("should overlap with timeslot inbetween given slot", () => {
+    it("timeslot fully contained within another should overlap", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       const otherSlot = new TimeSlot(new Time(10, 35), new Time(10, 55));
       assert.isTrue(timeSlot.overlaps(otherSlot));
     });
 
-    it("should overlap with endtime inbetween the timeslot", () => {
+    it("timeslot starts during another slot should overlap", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       const otherSlot = new TimeSlot(new Time(9, 35), new Time(10, 25));
       assert.isTrue(timeSlot.overlaps(otherSlot));
     });
 
-    it("should overlap with starttime inbetween the timeslot", () => {
+    it("timeslot starts during and ends with another slot should overlaps", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       const otherSlot = new TimeSlot(new Time(10, 35), new Time(11, 55));
       assert.isTrue(timeSlot.overlaps(otherSlot));
     });
 
-    it("should overlap with starttime inbetween and endtime equals", () => {
+    it("timeslot starts during and ends with another slot should overlaps", () => {
       const timeSlot = new TimeSlot(new Time(13, 15), new Time(13, 45));
       const otherSlot = new TimeSlot(new Time(13, 30), new Time(13, 45));
       assert.isTrue(otherSlot.overlaps(timeSlot));
     });
 
-    it("should not overlap with endtime equal to starttime of the timeslot", () => {
+    it("timeslot ends when another starts does not overlaps", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       const otherSlot = new TimeSlot(new Time(9, 35), new Time(10, 15));
       assert.isFalse(timeSlot.overlaps(otherSlot));
     });
 
-    it("should not overlap with starttime equal to endtime of the timeslot", () => {
+    it("timeslot starts when another ends does not overlaps", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       const otherSlot = new TimeSlot(new Time(11, 30), new Time(12, 15));
       assert.isFalse(timeSlot.overlaps(otherSlot));
@@ -79,7 +79,7 @@ describe("Time Slot", () => {
   });
 
   describe("Overlaps With Any", () => {
-    it("should not overlap when no given timeslot overlap", () => {
+    it("should not overlap when all timeslots are distinct", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       assert.isFalse(timeSlot.overlapsWithAny([
         new TimeSlot(new Time(9, 15), new Time(10, 10)),
@@ -87,7 +87,7 @@ describe("Time Slot", () => {
       ]));
     });
 
-    it("should overlap when atleast one timeslot overlap", () => {
+    it("should detecte overlap when any timeslot overlaps", () => {
       const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
       assert.isTrue(timeSlot.overlapsWithAny([
         new TimeSlot(new Time(10, 35), new Time(11, 0)),

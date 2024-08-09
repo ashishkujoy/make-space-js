@@ -57,5 +57,23 @@ describe("Meeting Room", () => {
         error: null,
       });
     });
+
+    it("should not allow booking during the buffer time", () => {
+      const meetingRoom = new MeetingRoom("test", 13, [
+        new TimeSlot(new Time(9, 0), new Time(9, 15)),
+        new TimeSlot(new Time(13, 15), new Time(13, 45)),
+        new TimeSlot(new Time(18, 45), new Time(19, 0)),
+      ]);
+
+      const timeSlot = new TimeSlot(new Time(13, 30), new Time(13, 45));
+      const booking = meetingRoom.book(3, timeSlot);
+
+      assert.deepStrictEqual(
+        booking,
+        {
+          success: false,
+          error: new TimeSlotNotAvailableError(timeSlot),
+        });
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { NotEnoughRoomCapacityError } from "./errors.js";
+import { NotEnoughRoomCapacityError, TimeSlotNotAvailableError } from "./errors.js";
 
 export default class MeetingRoom {
   constructor(name, capacity, bufferTime) {
@@ -17,6 +17,12 @@ export default class MeetingRoom {
       return {
         success: false,
         error: new NotEnoughRoomCapacityError(this.capacity, teamSize),
+      }
+    }
+    if (this.bufferTime.some(bufferSlot => bufferSlot.overlaps(timeSlot))) {
+      return {
+        success: false,
+        error: new TimeSlotNotAvailableError(timeSlot),
       }
     }
     this.bookedSlots.push(timeSlot);

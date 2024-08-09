@@ -59,4 +59,22 @@ describe("Time Slot", () => {
       assert.isTrue(timeSlot.overlaps(otherSlot));
     });
   });
+
+  describe("Overlaps With Any", () => {
+    it("should not overlap when no given timeslot overlap", () => {
+      const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
+      assert.isFalse(timeSlot.overlapsWithAny([
+        new TimeSlot(new Time(9, 15), new Time(10, 10)),
+        new TimeSlot(new Time(11, 35), new Time(11, 40)),
+      ]));
+    });
+
+    it("should overlap when atleast one timeslot overlap", () => {
+      const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 30));
+      assert.isTrue(timeSlot.overlapsWithAny([
+        new TimeSlot(new Time(10, 35), new Time(11, 0)),
+        new TimeSlot(new Time(11, 35), new Time(11, 40)),
+      ]));
+    });
+  });
 });

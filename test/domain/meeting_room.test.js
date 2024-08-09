@@ -75,5 +75,23 @@ describe("Meeting Room", () => {
           error: new TimeSlotNotAvailableError(timeSlot),
         });
     });
+
+    it("should not allow booking during a prebooked slot", () => {
+      const meetingRoom = new MeetingRoom("test", 13, [
+        new TimeSlot(new Time(9, 0), new Time(9, 15)),
+        new TimeSlot(new Time(13, 15), new Time(13, 45)),
+        new TimeSlot(new Time(18, 45), new Time(19, 0)),
+      ]);
+      const timeSlot = new TimeSlot(new Time(10, 15), new Time(10, 45));
+      meetingRoom.book(3, new TimeSlot(new Time(10, 30), new Time(12, 45)));
+      const booking = meetingRoom.book(3, timeSlot);
+
+      assert.deepStrictEqual(
+        booking,
+        {
+          success: false,
+          error: new TimeSlotNotAvailableError(timeSlot),
+        });
+    });
   });
 });

@@ -19,7 +19,7 @@ export default class MeetingRoom {
         error: new NotEnoughRoomCapacityError(this.capacity, teamSize),
       }
     }
-    if (this.bufferTime.some(bufferSlot => bufferSlot.overlaps(timeSlot))) {
+    if (timeSlot.overlapsWithAny(this.bufferTime.concat(this.bookedSlots))) {
       return {
         success: false,
         error: new TimeSlotNotAvailableError(timeSlot),

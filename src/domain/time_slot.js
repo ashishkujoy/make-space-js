@@ -26,6 +26,10 @@ export class TimeSlot {
     return startTimeOverlaps || endTimeOverlaps;
   }
 
+  overlapsWithAny(timeSlots) {
+    return timeSlots.some(otherTimeSlot => this.overlaps(otherTimeSlot));
+  }
+
   contains(time) {
     const startTimeInMin = this.start.toMinutes();
     const endTimeInMin = this.end.toMinutes();

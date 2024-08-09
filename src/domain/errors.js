@@ -12,3 +12,9 @@ export class TimeSlotNotAvailableError extends Error {
     this.timeSlot = timeSlot;
   }
 }
+
+export class NoVacantRoom extends Error {
+  constructor() {
+    super("No vacant room");
+  }
+}

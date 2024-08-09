@@ -15,6 +15,7 @@ describe("Meeting Room Manager", () => {
     minRoomOccupancy: 2,
     maxRoomOccupancy: 20,
     bookingIntervalInMinutes: 15,
+    shutoffSlot: new TimeSlot(new Time(23, 45), new Time(0, 0)),
   };
 
   describe("book", () => {
@@ -140,6 +141,44 @@ describe("Meeting Room Manager", () => {
       ], bookingRules);
 
       const booking = manager.book(20, new TimeSlot(new Time(10, 15), new Time(11, 10)));
+
+      assert.deepStrictEqual(
+        booking,
+        {
+          success: false,
+          roomName: undefined,
+          error: new InvalidTimeSlot(),
+        }
+      );
+    });
+
+    it("should not allow booking for spanning accross multiple day", () => {
+      const manager = new MeetingRoomManager([
+        new MeetingRoom("C-Cave", 3, bufferTime),
+        new MeetingRoom("D-Tower", 7, bufferTime),
+        new MeetingRoom("G-Mansion", 20, bufferTime),
+      ], bookingRules);
+
+      const booking = manager.book(20, new TimeSlot(new Time(10, 15), new Time(0, 15)));
+
+      assert.deepStrictEqual(
+        booking,
+        {
+          success: false,
+          roomName: undefined,
+          error: new InvalidTimeSlot(),
+        }
+      );
+    });
+
+    it("should not allow booking for overlapping with shutoff slot", () => {
+      const manager = new MeetingRoomManager([
+        new MeetingRoom("C-Cave", 3, bufferTime),
+        new MeetingRoom("D-Tower", 7, bufferTime),
+        new MeetingRoom("G-Mansion", 20, bufferTime),
+      ], bookingRules);
+
+      const booking = manager.book(20, new TimeSlot(new Time(23, 45), new Time(23, 50)));
 
       assert.deepStrictEqual(
         booking,

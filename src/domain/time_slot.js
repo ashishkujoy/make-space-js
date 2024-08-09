@@ -44,6 +44,10 @@ export class TimeSlot {
     return startTimeInMin < timeInMin && timeInMin < endTimeInMin;
   }
 
+  isSpanningMultipleDays() {
+    return this.end.toMinutes() - this.start.toMinutes() < 0;
+  }
+
   equals(other) {
     if (!(other instanceof TimeSlot)) return false;
     return this.start.equals(other.start) && this.end.equals(other.end);

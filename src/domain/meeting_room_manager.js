@@ -24,6 +24,21 @@ export class MeetingRoomManager {
   }
 
   #isValidTimeSlot(timeSlot) {
+    if (!this.#isFollowingBookingInterval(timeSlot)) return false;
+    if (timeSlot.isSpanningMultipleDays()) return false;
+    if (this.#isOverlappingWithShutoffSlot(timeSlot)) return false;
+    return true;
+  }
+
+
+  #isOverlappingWithShutoffSlot(timeSlot) {
+    console.log("---------Validating Shutoff slot------------");
+    console.log(`Shutoff timing: ${this.bookingRules.shutoffSlot}`);
+    console.log(`Time Slot: ${timeSlot}`);
+    return this.bookingRules.shutoffSlot.overlaps(timeSlot);
+  }
+
+  #isFollowingBookingInterval(timeSlot) {
     const { bookingIntervalInMinutes } = this.bookingRules;
     return [timeSlot.start.minutes, timeSlot.end.minutes].every(m => m % bookingIntervalInMinutes === 0);
   }

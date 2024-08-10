@@ -32,20 +32,4 @@ export class MeetingRoomManager {
       .filter(room => room.isVacant(timeSlot))
       .map(room => room.name);
   }
-
-  #roomResponse(roomName) {
-    return {
-      success: true,
-      roomName,
-      error: null,
-    }
-  }
-
-  #noVaccantRoomResponse() {
-    return {
-      success: false,
-      roomName: undefined,
-      error: new NoVacantRoomError(),
-    }
-  }
 }

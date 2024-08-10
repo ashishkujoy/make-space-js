@@ -2,6 +2,7 @@ import { MeetingRoomManager } from "../domain/meeting_room_manager.js";
 import MeetingRoom from "../domain/meeting_room.js";
 import { CommandType, parseCommand } from "./commands.js";
 import { TimeSlot } from "../domain/time_slot.js";
+import { InvalidTeamSize, InvalidTimeSlot } from "../domain/errors.js";
 
 export class App {
   constructor(manager) {
@@ -27,7 +28,11 @@ export class App {
     switch (command.type) {
       case CommandType.Book: {
         const booking = this.manager.book(command.teamSize, timeSlot);
-        return booking.success ? booking.roomName : "NO_VACANT_ROOM";
+        if (booking.success) return booking.roomName;
+        if (booking.error instanceof InvalidTeamSize || booking.error instanceof InvalidTimeSlot) {
+          return "INCORRECT_INPUT";
+        }
+        return "NO_VACANT_ROOM";
       };
       case CommandType.Vacancy: {
         const rooms = this.manager.vacancy(timeSlot);

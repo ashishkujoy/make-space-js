@@ -183,7 +183,7 @@ describe("Command", () => {
       assert.throws(
         () => parseCommand("Foo 12:35 13:00"),
         ParseError,
-        "Unknown command Foo",
+        "Unknown command FOO",
       )
     });
   });

@@ -1,4 +1,4 @@
-import { InvalidTimeSlot, NoVacantRoom } from "./errors.js";
+import { InvalidTeamSize, InvalidTimeSlot, NoVacantRoom } from "./errors.js";
 
 export class MeetingRoomManager {
   constructor(meetingRooms, bookingRules) {
@@ -27,8 +27,8 @@ export class MeetingRoomManager {
   }
 
   #validateRequest(teamSize, timeSlot) {
-    if (!this.#isAccommodableTeamSize(teamSize)) return new NoVacantRoom();
-    if (!this.#isValidTimeSlot(timeSlot)) return new InvalidTimeSlot();
+    if (!this.#isAccommodableTeamSize(teamSize)) return new InvalidTeamSize(teamSize);
+    if (!this.#isValidTimeSlot(timeSlot)) return new InvalidTimeSlot(timeSlot);
   }
 
   #isValidTimeSlot(timeSlot) {

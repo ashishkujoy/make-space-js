@@ -1,4 +1,4 @@
-import { Time } from "../domain/time_slot.js";
+import { Time, TimeSlot } from "../domain/time_slot.js";
 import { ParseError } from "./parse_error.js";
 
 export const CommandType = {
@@ -32,8 +32,19 @@ export const parseCommand = (rawCommand) => {
     startTime,
     endTime,
     teamSize
-  ] = rawCommand.split(" ").map(token => token.trim());
-  if (commandType.toUpperCase() === CommandType.Book) {
+  ] = rawCommand.split(" ").map(token => token.trim().toUpperCase());
+
+  if (![CommandType.Book, CommandType.Vacancy].includes(commandType)) {
+    throw new ParseError(`Unknown command ${commandType}`);
+  }
+
+  const timeSlot = new TimeSlot(parseTime(startTime), parseTime(endTime));
+
+  if (timeSlot.isSpanningMultipleDays()) {
+    throw new ParseError(`Illegal timespan`);
+  }
+
+  if (commandType === CommandType.Book) {
     return {
       type: CommandType.Book,
       teamSize: parseTeamSize(teamSize),
@@ -42,13 +53,11 @@ export const parseCommand = (rawCommand) => {
     }
   }
 
-  if (commandType.toUpperCase() === CommandType.Vacancy) {
+  if (commandType === CommandType.Vacancy) {
     return {
       type: CommandType.Vacancy,
       startTime: parseTime(startTime),
       endTime: parseTime(endTime),
     }
   }
-  
-  throw new ParseError(`Unknown command ${commandType}`);
 }

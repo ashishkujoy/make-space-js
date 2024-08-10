@@ -12,7 +12,7 @@ describe("App", () => {
   const config = {
     rooms: [
       { name: "C-Cave", capacity: 3 },
-      { name: "D-Tower", capacity: 4 },
+      { name: "D-Tower", capacity: 7 },
       { name: "G-Mansion", capacity: 20 },
     ],
     bufferTime,
@@ -57,7 +57,7 @@ describe("App", () => {
     );
     assert.deepStrictEqual(
       app.execute("BOOK 23:00 01:45 3"),
-      "NO_VACANT_ROOM",
+      "INCORRECT_INPUT",
     );
     assert.deepStrictEqual(
       app.execute("BOOK 11:15 11:30 13"),
@@ -79,5 +79,25 @@ describe("App", () => {
       app.execute("VACANCY 10:30 11:30"),
       "NO_VACANT_ROOM",
     );
+  });
+
+  it("should handle multiple commands", () => {
+    const app = App.createInstance(config);
+    [
+      { command: "BOOK 09:30 13:15 2", expectedOutput: "C-Cave" },
+      { command: "BOOK 13:45 18:45 2", expectedOutput: "C-Cave" },
+      { command: "BOOK 12:55 14:00 3", expectedOutput: "INCORRECT_INPUT" },
+      { command: "BOOK 13:45 17:15 6", expectedOutput: "D-Tower" },
+      { command: "VACANCY 13:45 15:00", expectedOutput: "G-Mansion" },
+      { command: "BOOK 14:00 15:00 2", expectedOutput: "G-Mansion" },
+      { command: "BOOK 17:00 18:30 12", expectedOutput: "G-Mansion" },
+      { command: "VACANCY 17:00 18:00", expectedOutput: "NO_VACANT_ROOM" },
+      { command: "VACANCY 17:30 18:00", expectedOutput: "D-Tower" },
+      { command: "BOOK 17:00 18:30 12", expectedOutput: "NO_VACANT_ROOM" },
+      { command: "BOOK 15:35 16:35 12", expectedOutput: "INCORRECT_INPUT" },
+    ].map(({ command, expectedOutput }) => {
+      const actualOutput = app.execute(command);
+      assert.equal(actualOutput, expectedOutput, `Command: ${command}`);
+    })
   });
 });

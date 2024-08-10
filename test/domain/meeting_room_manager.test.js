@@ -2,7 +2,7 @@ import { MeetingRoomManager } from "../../src/domain/meeting_room_manager.js";
 import MeetingRoom from "../../src/domain/meeting_room.js"
 import { Time, TimeSlot } from "../../src/domain/time_slot.js"
 import { assert } from "chai";
-import { InvalidTimeSlot, NoVacantRoom } from "../../src/domain/errors.js";
+import { InvalidTeamSize, InvalidTimeSlot, NoVacantRoom } from "../../src/domain/errors.js";
 
 describe("Meeting Room Manager", () => {
   const bufferTime = [
@@ -80,7 +80,7 @@ describe("Meeting Room Manager", () => {
         {
           success: false,
           roomName: undefined,
-          error: new NoVacantRoom(),
+          error: new InvalidTeamSize(1),
         }
       );
     });
@@ -95,67 +95,67 @@ describe("Meeting Room Manager", () => {
         {
           success: false,
           roomName: undefined,
-          error: new NoVacantRoom(),
+          error: new InvalidTeamSize(21),
         }
       );
     });
 
     it("should not allow booking for a non fifteen minute starting interval based timeslot", () => {
       const manager = new MeetingRoomManager(createMeetingRooms(), bookingRules);
-
-      const booking = manager.book(20, new TimeSlot(new Time(10, 10), new Time(11, 0)));
+      const timeSlot = new TimeSlot(new Time(10, 10), new Time(11, 0));
+      const booking = manager.book(20, timeSlot);
 
       assert.deepStrictEqual(
         booking,
         {
           success: false,
           roomName: undefined,
-          error: new InvalidTimeSlot(),
+          error: new InvalidTimeSlot(timeSlot),
         }
       );
     });
 
     it("should not allow booking for a non fifteen minute ending interval based timeslot", () => {
       const manager = new MeetingRoomManager(createMeetingRooms(), bookingRules);
-
-      const booking = manager.book(20, new TimeSlot(new Time(10, 15), new Time(11, 10)));
+      const timeSlot = new TimeSlot(new Time(10, 15), new Time(11, 10));
+      const booking = manager.book(20, timeSlot);
 
       assert.deepStrictEqual(
         booking,
         {
           success: false,
           roomName: undefined,
-          error: new InvalidTimeSlot(),
+          error: new InvalidTimeSlot(timeSlot),
         }
       );
     });
 
     it("should not allow booking for spanning accross multiple day", () => {
       const manager = new MeetingRoomManager(createMeetingRooms(), bookingRules);
-
-      const booking = manager.book(20, new TimeSlot(new Time(10, 15), new Time(0, 15)));
+      const timeSlot = new TimeSlot(new Time(10, 15), new Time(0, 15));
+      const booking = manager.book(20, timeSlot);
 
       assert.deepStrictEqual(
         booking,
         {
           success: false,
           roomName: undefined,
-          error: new InvalidTimeSlot(),
+          error: new InvalidTimeSlot(timeSlot),
         }
       );
     });
 
     it("should not allow booking for overlapping with shutoff slot", () => {
       const manager = new MeetingRoomManager(createMeetingRooms(), bookingRules);
-
-      const booking = manager.book(20, new TimeSlot(new Time(23, 45), new Time(23, 50)));
+      const timeSlot = new TimeSlot(new Time(23, 45), new Time(23, 50));
+      const booking = manager.book(20, timeSlot);
 
       assert.deepStrictEqual(
         booking,
         {
           success: false,
           roomName: undefined,
-          error: new InvalidTimeSlot(),
+          error: new InvalidTimeSlot(timeSlot),
         }
       );
     });

@@ -20,7 +20,13 @@ export class NoVacantRoom extends Error {
 }
 
 export class InvalidTimeSlot extends Error {
-  constructor() {
-    super("Invalid timeslot");
+  constructor(timeSlot) {
+    super(`Invalid timeslot ${timeSlot}`);
+  }
+}
+
+export class InvalidTeamSize extends Error {
+  constructor(teamSize) {
+    super(`Invalid teamsize ${teamSize}`);
   }
 }

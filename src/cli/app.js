@@ -1,6 +1,7 @@
 import { InvalidTeamSizeError, InvalidTimeSlotError } from "../domain/errors.js";
 import MeetingRoom from "../domain/meeting_room.js";
 import { MeetingRoomManager } from "../domain/meeting_room_manager.js";
+import MeetingRoomValidator from "../domain/validators.js";
 import { CommandType, parseCommand } from "./commands.js";
 
 export class App {
@@ -51,7 +52,9 @@ export class App {
       shutoffSlot: config.shutoffSlot,
     };
 
-    const manager = new MeetingRoomManager(meetingRooms, bookingRules);
+    const validator = new MeetingRoomValidator(bookingRules);
+
+    const manager = new MeetingRoomManager(meetingRooms, validator);
 
     return new App(manager);
   }

@@ -1,16 +1,19 @@
-import { InvalidTeamSizeError, InvalidTimeSlotError, NoVacantRoomError } from "./errors.js";
+import { NoVacantRoomError } from "./errors.js";
 
 export class MeetingRoomManager {
-  constructor(meetingRooms, bookingRules) {
+  constructor(meetingRooms, validator) {
     this.meetingRooms = meetingRooms;
-    this.bookingRules = bookingRules;
+    this.validator = validator;
   }
 
   book(teamSize, timeSlot) {
-    const validationError = this.#validateRequest(teamSize, timeSlot);
-    if (validationError) {
-      return { success: false, roomName: undefined, error: validationError }
+    try {
+      this.validator.validateTeamSize(teamSize);
+      this.validator.validateTimeSlot(timeSlot);
+    } catch (error) {
+      return { success: false, roomName: undefined, error }
     }
+
     const room = this.meetingRooms.find(room => {
       return room.book(teamSize, timeSlot).success;
     });
@@ -19,37 +22,15 @@ export class MeetingRoomManager {
   }
 
   vacancy(timeSlot) {
-    if (!this.#isValidTimeSlot(timeSlot)) return [];
+    try {
+      this.validator.validateTimeSlot(timeSlot);
+    } catch {
+      return [];
+    }
 
     return this.meetingRooms
       .filter(room => room.isVacant(timeSlot))
       .map(room => room.name);
-  }
-
-  #validateRequest(teamSize, timeSlot) {
-    if (!this.#isAccommodableTeamSize(teamSize)) return new InvalidTeamSizeError(teamSize);
-    if (!this.#isValidTimeSlot(timeSlot)) return new InvalidTimeSlotError(timeSlot);
-  }
-
-  #isValidTimeSlot(timeSlot) {
-    if (!this.#isFollowingBookingInterval(timeSlot)) return false;
-    if (timeSlot.isSpanningMultipleDays()) return false;
-    if (this.#isOverlappingWithShutoffSlot(timeSlot)) return false;
-    return true;
-  }
-
-  #isOverlappingWithShutoffSlot(timeSlot) {
-    return this.bookingRules.shutoffSlot.overlaps(timeSlot);
-  }
-
-  #isFollowingBookingInterval(timeSlot) {
-    const { bookingIntervalInMinutes } = this.bookingRules;
-    return [timeSlot.start.minutes, timeSlot.end.minutes].every(m => m % bookingIntervalInMinutes === 0);
-  }
-
-  #isAccommodableTeamSize(teamSize) {
-    const { minRoomOccupancy, maxRoomOccupancy } = this.bookingRules;
-    return teamSize >= minRoomOccupancy && teamSize <= maxRoomOccupancy;
   }
 
   #roomResponse(roomName) {

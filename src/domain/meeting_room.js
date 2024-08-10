@@ -17,21 +17,11 @@ export default class MeetingRoom {
 
   book(teamSize, timeSlot) {
     if (!this.#canAccommodate(teamSize)) {
-      return {
-        success: false,
-        error: new NotEnoughRoomCapacityError(this.capacity, teamSize),
-      }
+      throw new NotEnoughRoomCapacityError(this.capacity, teamSize);
     }
     if (timeSlot.overlapsWithAny(this.bookedSlots)) {
-      return {
-        success: false,
-        error: new TimeSlotNotAvailableError(timeSlot),
-      }
+      throw new TimeSlotNotAvailableError(timeSlot);
     }
     this.bookedSlots.push(timeSlot);
-    return {
-      success: true,
-      error: null
-    }
   }
 }

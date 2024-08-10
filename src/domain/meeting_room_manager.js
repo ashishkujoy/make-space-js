@@ -9,12 +9,16 @@ export class MeetingRoomManager {
   book(teamSize, timeSlot) {
     this.validator.validate(teamSize, timeSlot);
 
-    const room = this.meetingRooms.find(room => {
-      return room.book(teamSize, timeSlot).success;
-    });
+    for (const room of this.meetingRooms) {
+      try {
+        room.book(teamSize, timeSlot);
+        return room.name;
+      } catch {
+        continue;
+      }
+    }
 
-    if (!room) throw new NoVacantRoomError();
-    return room.name;
+    throw new NoVacantRoomError();
   }
 
   vacancy(timeSlot) {

@@ -18,6 +18,14 @@ export class MeetingRoomManager {
     return room ? this.#roomResponse(room.name) : this.#noVaccantRoomResponse();
   }
 
+  vacancy(timeSlot) {
+    if (!this.#isValidTimeSlot(timeSlot)) return [];
+
+    return this.meetingRooms
+      .filter(room => room.isVacant(timeSlot))
+      .map(room => room.name);
+  }
+
   #validateRequest(teamSize, timeSlot) {
     if (!this.#isAccommodableTeamSize(teamSize)) return new NoVacantRoom();
     if (!this.#isValidTimeSlot(timeSlot)) return new InvalidTimeSlot();
@@ -29,7 +37,6 @@ export class MeetingRoomManager {
     if (this.#isOverlappingWithShutoffSlot(timeSlot)) return false;
     return true;
   }
-
 
   #isOverlappingWithShutoffSlot(timeSlot) {
     return this.bookingRules.shutoffSlot.overlaps(timeSlot);

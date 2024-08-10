@@ -7,17 +7,14 @@ export class MeetingRoomManager {
   }
 
   book(teamSize, timeSlot) {
-    try {
-      this.validator.validate(teamSize, timeSlot);
-    } catch (error) {
-      return { success: false, roomName: undefined, error }
-    }
+    this.validator.validate(teamSize, timeSlot);
 
     const room = this.meetingRooms.find(room => {
       return room.book(teamSize, timeSlot).success;
     });
 
-    return room ? this.#roomResponse(room.name) : this.#noVaccantRoomResponse();
+    if (!room) throw new NoVacantRoomError();
+    return room.name;
   }
 
   vacancy(timeSlot) {

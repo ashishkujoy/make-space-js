@@ -30,32 +30,18 @@ describe("Meeting Room Manager", () => {
   describe("book", () => {
     it("should book a room for available time slot and team size", () => {
       const manager = new MeetingRoomManager(createMeetingRooms(), validator);
-      const booking = manager.book(3, new TimeSlot(new Time(10, 0), new Time(10, 45)));
+      const room = manager.book(3, new TimeSlot(new Time(10, 0), new Time(10, 45)));
 
-      assert.deepStrictEqual(
-        booking,
-        {
-          success: true,
-          roomName: "C-Cave",
-          error: null,
-        }
-      )
+      assert.equal(room, "C-Cave");
     });
 
     it("should book a room of higher capacity when a optimal capacity room is not available", () => {
       const manager = new MeetingRoomManager(createMeetingRooms(), validator);
 
       manager.book(3, new TimeSlot(new Time(10, 0), new Time(10, 45)));
-      const booking = manager.book(3, new TimeSlot(new Time(10, 30), new Time(10, 45)));
-
-      assert.deepStrictEqual(
-        booking,
-        {
-          success: true,
-          roomName: "D-Tower",
-          error: null,
-        }
-      )
+      const room = manager.book(3, new TimeSlot(new Time(10, 30), new Time(10, 45)));
+      
+      assert.equal(room, "D-Tower");
     });
 
     it("should use validator to validate timeslot and teamsize", () => {

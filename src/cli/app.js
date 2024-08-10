@@ -30,14 +30,11 @@ export class App {
   }
 
   #executeBookingCommand(command) {
-    const {
-      success,
-      error,
-      roomName
-    } = this.manager.book(command.teamSize, command.timeSlot);
-
-    if (success) return roomName;
-    return this.#isNoVaccantRoomError(error) ? "NO_VACANT_ROOM" : "INCORRECT_INPUT";
+    try {
+      return this.manager.book(command.teamSize, command.timeSlot);
+    } catch (e) {
+      return this.#isNoVaccantRoomError(e) ? "NO_VACANT_ROOM" : "INCORRECT_INPUT";
+    }
   }
 
   #isNoVaccantRoomError(error) {

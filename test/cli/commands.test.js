@@ -102,33 +102,89 @@ describe("Command", () => {
   });
 
   describe("Parse", () => {
-    it("should parse a valid book command", () => {
-      const command = parseCommand("BOOK 14:15 16:00 12");
-      assert.deepStrictEqual(
-        command,
-        {
-          type: CommandType.Book,
-          startTime: new Time(14, 15),
-          endTime: new Time(16, 0),
-          teamSize: 12,
-        }
+    describe("Book", () => {
+      it("should parse a valid book command", () => {
+        const command = parseCommand("BOOK 14:15 16:00 12");
+        assert.deepStrictEqual(
+          command,
+          {
+            type: CommandType.Book,
+            startTime: new Time(14, 15),
+            endTime: new Time(16, 0),
+            teamSize: 12,
+          }
+        )
+      });
+
+      it("should not parse command with invalid time", () => {
+        assert.throws(
+          () => parseCommand("BOOK 14:15 16:0 12"),
+          ParseError,
+          "Invalid time format 16:0",
+        );
+      });
+
+      it("should not parse command with invalid team size", () => {
+        assert.throws(
+          () => parseCommand("BOOK 14:15 16:00 -12"),
+          ParseError,
+          "Invalid team size -12",
+        );
+      });
+    });
+
+    describe("Vaccancy", () => {
+      it("should parse a valid vaccancy command", () => {
+        const command = parseCommand("VACANCY 14:30 15:00");
+        assert.deepStrictEqual(
+          command,
+          {
+            type: CommandType.Vacancy,
+            startTime: new Time(14, 30),
+            endTime: new Time(15, 0),
+          }
+        );
+      });
+
+      it("should not parse vaccancy command missing endtime", () => {
+        assert.throws(
+          () => parseCommand("VACANCY 14:30"),
+          ParseError,
+          "Missing required time",
+        );
+      });
+
+      it("should not parse vaccancy command missing startTime", () => {
+        assert.throws(
+          () => parseCommand("VACANCY"),
+          ParseError,
+          "Missing required time",
+        );
+      });
+
+      it("should not parse vaccancy command having invalid startTime", () => {
+        assert.throws(
+          () => parseCommand("VACANCY 24:00 13:00"),
+          ParseError,
+          "Invalid time 24:00",
+        );
+      });
+
+      it("should not parse vaccancy command having invalid endTime", () => {
+        assert.throws(
+          () => parseCommand("VACANCY 12:00 13:73"),
+          ParseError,
+          "Invalid time 13:73",
+        );
+      });
+    });
+
+    it("should not parse unknown command", () => {
+      assert.throws(
+        () => parseCommand("Foo 12:35 13:00"),
+        ParseError,
+        "Unknown command Foo",
       )
-    });
-
-    it("should not parse command with invalid time", () => {
-      assert.throws(
-        () => parseCommand("BOOK 14:15 16:0 12"),
-        ParseError,
-        "Invalid time format 16:0",
-      );
-    });
-
-    it("should not parse command with invalid team size", () => {
-      assert.throws(
-        () => parseCommand("BOOK 14:15 16:00 -12"),
-        ParseError,
-        "Invalid team size -12",
-      );
     });
   });
 });

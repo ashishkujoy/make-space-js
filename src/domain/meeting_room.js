@@ -12,6 +12,10 @@ export default class MeetingRoom {
     return this.capacity >= teamSize;
   }
 
+  isVacant(timeSlot) {
+    return !timeSlot.overlapsWithAny(this.bufferTime.concat(this.bookedSlots));
+  }
+
   book(teamSize, timeSlot) {
     if (!this.canAccommodate(teamSize)) {
       return {

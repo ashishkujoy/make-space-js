@@ -94,4 +94,34 @@ describe("Meeting Room", () => {
         });
     });
   });
+
+  describe("IsVacant", () => {
+    it("should be vaccant when there is no booking for given timeslot", () => {
+      const meetingRoom = new MeetingRoom("test", 13, []);
+      const timeSlot = new TimeSlot(new Time(10, 0), new Time(10, 15));
+
+      assert.isTrue(meetingRoom.isVacant(timeSlot));
+    });
+
+    it("should not be vaccant during buffer time", () => {
+      const meetingRoom = new MeetingRoom("test", 13, [
+        new TimeSlot(new Time(10, 0), new Time(10, 45))
+      ]);
+      const timeSlot = new TimeSlot(new Time(10, 30), new Time(11, 15));
+
+      assert.isFalse(meetingRoom.isVacant(timeSlot));
+    });
+
+    it("should not be vaccant during a prebooked time", () => {
+      const meetingRoom = new MeetingRoom("test", 13, [
+        new TimeSlot(new Time(21, 0), new Time(20, 45))
+      ]);
+
+      meetingRoom.book(10, new TimeSlot(new Time(10, 30), new Time(11, 15)));
+
+      assert.isFalse(meetingRoom.isVacant(
+        new TimeSlot(new Time(10, 45), new Time(11, 0))
+      ));
+    });
+  });
 });

@@ -1,8 +1,8 @@
-import { MeetingRoomManager } from "../../src/domain/meeting_room_manager.js";
-import MeetingRoom from "../../src/domain/meeting_room.js"
-import { Time, TimeSlot } from "../../src/domain/time_slot.js"
-import { assert } from "chai";
-import MeetingRoomValidator from "../../src/domain/validators.js";
+const MeetingRoomManager = require("../../src/domain/meeting_room_manager.js");
+const MeetingRoom = require("../../src/domain/meeting_room.js");
+const { Time, TimeSlot } = require("../../src/domain/time_slot.js");
+const assert = require("assert");
+const MeetingRoomValidator = require("../../src/domain/validators.js");
 
 describe("Meeting Room Manager", () => {
   const bufferTime = [
@@ -40,7 +40,7 @@ describe("Meeting Room Manager", () => {
 
       manager.book(3, new TimeSlot(new Time(10, 0), new Time(10, 45)));
       const room = manager.book(3, new TimeSlot(new Time(10, 30), new Time(10, 45)));
-      
+
       assert.equal(room, "D-Tower");
     });
 

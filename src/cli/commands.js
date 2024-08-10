@@ -1,14 +1,14 @@
-import { Time, TimeSlot } from "../domain/time_slot.js";
-import { ParseError } from "./parse_error.js";
+const { Time, TimeSlot } = require("../domain/time_slot.js");
+const { ParseError } = require("./parse_error.js");
 
-export const CommandType = {
+const CommandType = {
   Book: "BOOK",
   Vacancy: "VACANCY"
 }
 
 const timeRegex = /^\d\d:\d\d$/;
 
-export const parseTime = (time) => {
+const parseTime = (time) => {
   if (time === undefined) throw new ParseError("Missing required time");
   if (!timeRegex.test(time)) throw new ParseError(`Invalid time format ${time}`);
 
@@ -26,7 +26,7 @@ const parseTeamSize = (teamSize) => {
   return +teamSize;
 }
 
-export const parseCommand = (rawCommand) => {
+const parseCommand = (rawCommand) => {
   const [
     commandType,
     startTime,
@@ -58,4 +58,10 @@ export const parseCommand = (rawCommand) => {
       timeSlot
     }
   }
+}
+
+module.exports = {
+  CommandType,
+  parseTime,
+  parseCommand,
 }

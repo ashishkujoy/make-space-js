@@ -1,7 +1,7 @@
-import MeetingRoom from "../../src/domain/meeting_room.js";
-import { assert } from "chai";
-import { Time, TimeSlot } from "../../src/domain/time_slot.js";
-import { NotEnoughRoomCapacityError, TimeSlotNotAvailableError } from "../../src/domain/errors.js";
+const MeetingRoom = require("../../src/domain/meeting_room.js");
+const assert = require("assert");
+const { Time, TimeSlot } = require("../../src/domain/time_slot.js");
+const { NotEnoughRoomCapacityError, TimeSlotNotAvailableError } = require("../../src/domain/errors.js");
 
 describe("Meeting Room", () => {
   describe("Book", () => {
@@ -48,7 +48,7 @@ describe("Meeting Room", () => {
       const meetingRoom = new MeetingRoom("test", 13);
       const timeSlot = new TimeSlot(new Time(10, 0), new Time(10, 15));
 
-      assert.isTrue(meetingRoom.isVacant(timeSlot));
+      assert(meetingRoom.isVacant(timeSlot));
     });
 
     it("should not be vaccant during a prebooked time", () => {
@@ -56,7 +56,7 @@ describe("Meeting Room", () => {
 
       meetingRoom.book(10, new TimeSlot(new Time(10, 30), new Time(11, 15)));
 
-      assert.isFalse(meetingRoom.isVacant(
+      assert(!meetingRoom.isVacant(
         new TimeSlot(new Time(10, 45), new Time(11, 0))
       ));
     });

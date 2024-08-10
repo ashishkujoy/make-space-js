@@ -1,6 +1,6 @@
-import { NotEnoughRoomCapacityError, TimeSlotNotAvailableError } from "./errors.js";
+const { NotEnoughRoomCapacityError, TimeSlotNotAvailableError } = require("./errors.js");
 
-export default class MeetingRoom {
+class MeetingRoom {
   constructor(name, capacity) {
     this.name = name;
     this.capacity = capacity;
@@ -25,3 +25,5 @@ export default class MeetingRoom {
     this.bookedSlots.push(timeSlot);
   }
 }
+
+module.exports = MeetingRoom;

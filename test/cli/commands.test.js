@@ -1,7 +1,7 @@
-import { assert } from "chai";
-import { Time, TimeSlot } from "../../src/domain/time_slot.js";
-import { parseCommand, CommandType, parseTime } from "../../src/cli/commands.js";
-import { ParseError } from "../../src/cli/parse_error.js";
+const assert = require("assert");
+const { Time, TimeSlot } = require("../../src/domain/time_slot.js");
+const { parseCommand, CommandType, parseTime } = require("../../src/cli/commands.js");
+const { ParseError } = require("../../src/cli/parse_error.js");
 
 describe("Command", () => {
   describe("Parse Time", () => {

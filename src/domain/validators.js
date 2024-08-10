@@ -1,6 +1,6 @@
-import { InvalidTeamSizeError, InvalidTimeSlotError } from "./errors.js";
+const { InvalidTeamSizeError, InvalidTimeSlotError } = require("./errors.js");
 
-export default class MeetingRoomValidator {
+class MeetingRoomValidator {
   constructor(config) {
     this.config = config;
   }
@@ -47,3 +47,5 @@ export default class MeetingRoomValidator {
     ].every(m => m % bookingIntervalInMinutes === 0);
   }
 }
+
+module.exports = MeetingRoomValidator;

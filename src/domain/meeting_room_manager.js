@@ -1,6 +1,6 @@
-import { NoVacantRoomError } from "./errors.js";
+const { NoVacantRoomError } = require("./errors.js");
 
-export class MeetingRoomManager {
+class MeetingRoomManager {
   constructor(meetingRooms, validator) {
     this.meetingRooms = meetingRooms;
     this.validator = validator;
@@ -33,3 +33,5 @@ export class MeetingRoomManager {
       .map(room => room.name);
   }
 }
+
+module.exports = MeetingRoomManager;

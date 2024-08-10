@@ -1,6 +1,6 @@
-import fs from "fs";
-import { App } from "./src/cli/app.js";
-import { TimeSlot, Time } from "./src/domain/time_slot.js";
+const fs = require("fs");
+const App = require("./src/cli/app.js");
+const { TimeSlot, Time } = require("./src/domain/time_slot.js");
 
 const filename = process.argv[2];
 

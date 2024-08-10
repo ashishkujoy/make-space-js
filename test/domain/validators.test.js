@@ -1,7 +1,7 @@
-import { assert } from "chai";
-import MeetingRoomValidator from "../../src/domain/validators.js";
-import { InvalidTeamSizeError, InvalidTimeSlotError } from "../../src/domain/errors.js";
-import { TimeSlot, Time } from "../../src/domain/time_slot.js";
+const assert = require("assert");
+const MeetingRoomValidator = require("../../src/domain/validators.js");
+const { InvalidTeamSizeError, InvalidTimeSlotError } = require("../../src/domain/errors.js");
+const { TimeSlot, Time } = require("../../src/domain/time_slot.js");
 
 describe("Validators", () => {
   const bufferTime = [

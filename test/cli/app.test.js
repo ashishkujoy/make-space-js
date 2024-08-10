@@ -1,6 +1,6 @@
-import { assert } from "chai";
-import { App } from "../../src/cli/app.js";
-import { Time, TimeSlot } from "../../src/domain/time_slot.js";
+const assert = require("assert");
+const App = require("../../src/cli/app.js");
+const { Time, TimeSlot } = require("../../src/domain/time_slot.js");
 
 describe("App", () => {
   const bufferTime = [

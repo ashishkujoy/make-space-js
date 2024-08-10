@@ -1,10 +1,10 @@
-import { NoVacantRoomError } from "../domain/errors.js";
-import MeetingRoom from "../domain/meeting_room.js";
-import { MeetingRoomManager } from "../domain/meeting_room_manager.js";
-import MeetingRoomValidator from "../domain/validators.js";
-import { CommandType, parseCommand } from "./commands.js";
+const { NoVacantRoomError } = require("../domain/errors.js");
+const MeetingRoom = require("../domain/meeting_room.js");
+const MeetingRoomManager = require("../domain/meeting_room_manager.js");
+const MeetingRoomValidator = require("../domain/validators.js");
+const { CommandType, parseCommand } = require("./commands.js");
 
-export class App {
+class App {
   constructor(manager) {
     this.manager = manager;
   }
@@ -12,7 +12,7 @@ export class App {
   execute(rawCommand) {
     try {
       return this.#executeCommand(parseCommand(rawCommand));
-    } catch {
+    } catch (e) {
       return "INCORRECT_INPUT";
     }
   }
@@ -64,3 +64,5 @@ export class App {
     return new App(manager);
   }
 }
+
+module.exports = App;

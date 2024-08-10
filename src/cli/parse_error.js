@@ -1,5 +1,7 @@
-export class ParseError extends Error {
+class ParseError extends Error {
   constructor(message) {
     super(message);
   }
 }
+
+module.exports = { ParseError };

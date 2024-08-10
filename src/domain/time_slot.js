@@ -1,4 +1,4 @@
-export class Time {
+class Time {
   constructor(hours, minutes) {
     this.hours = hours;
     this.minutes = minutes;
@@ -18,7 +18,7 @@ export class Time {
   }
 }
 
-export class TimeSlot {
+class TimeSlot {
   constructor(start, end) {
     this.start = start;
     this.end = end;
@@ -57,3 +57,5 @@ export class TimeSlot {
     return `${this.start}-${this.end}`;
   }
 }
+
+module.exports = { Time, TimeSlot };

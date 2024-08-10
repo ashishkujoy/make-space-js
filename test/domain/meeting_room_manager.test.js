@@ -45,7 +45,7 @@ describe("Meeting Room Manager", () => {
     });
 
     it("should use validator to validate timeslot and teamsize", () => {
-      let timeSlotQuery = undefined;
+      let timeSlotQuery;
 
       const manager = new MeetingRoomManager(createMeetingRooms(), {
         validate: (timeSlot) => {

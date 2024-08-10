@@ -15,8 +15,8 @@ class MeetingRoomValidator {
     if (timeSlot.isSpanningMultipleDays()) return false;
     if (!this.#isFollowingBookingInterval(timeSlot)) return false;
     if (timeSlot.overlapsWithAny(this.config.bufferTime)) return false;
-    if (this.#isOverlappingWithShutoffSlot(timeSlot)) return false;
-    return true;
+
+    return !this.#isOverlappingWithShutoffSlot(timeSlot);
   }
 
   #isOverlappingWithShutoffSlot(timeSlot) {

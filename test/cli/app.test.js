@@ -95,7 +95,7 @@ describe("App", () => {
       { command: "VACANCY 17:30 18:00", expectedOutput: "D-Tower" },
       { command: "BOOK 17:00 18:30 12", expectedOutput: "NO_VACANT_ROOM" },
       { command: "BOOK 15:35 16:35 12", expectedOutput: "INCORRECT_INPUT" },
-    ].map(({ command, expectedOutput }) => {
+    ].forEach(({ command, expectedOutput }) => {
       const actualOutput = app.execute(command);
       assert.equal(actualOutput, expectedOutput, `Command: ${command}`);
     })
@@ -117,7 +117,7 @@ describe("App", () => {
       { command: "VACANCY 15:45 16:00", expectedOutput: "G-Mansion" },
       { command: "BOOK 16:00 17:00 5", expectedOutput: "G-Mansion" },
       { command: "VACANCY 18:00 19:00", expectedOutput: "NO_VACANT_ROOM" },
-    ].map(({ command, expectedOutput }) => {
+    ].forEach(({ command, expectedOutput }) => {
       const actualOutput = app.execute(command);
       assert.equal(actualOutput, expectedOutput, `Command: ${command}`);
     })
@@ -137,7 +137,7 @@ describe("App", () => {
       { command: "VACANCY 17:30 18:00", expectedOutput: "D-Tower" },
       { command: "BOOK 17:00 18:30 12", expectedOutput: "NO_VACANT_ROOM" },
       { command: "BOOK 15:35 16:35 12", expectedOutput: "INCORRECT_INPUT" },
-    ].map(({ command, expectedOutput }) => {
+    ].forEach(({ command, expectedOutput }) => {
       const actualOutput = app.execute(command);
       assert.equal(actualOutput, expectedOutput, `Command: ${command}`);
     })
@@ -152,7 +152,7 @@ describe("App", () => {
       { command: "BOOK 23:00 23:45 4", expectedOutput: "D-Tower" },
       { command: "VACANCY 22:00 23:45", expectedOutput: "C-Cave" },
       { command: "VACANCY 22:00 01:00", expectedOutput: "INCORRECT_INPUT" },
-    ].map(({ command, expectedOutput }) => {
+    ].forEach(({ command, expectedOutput }) => {
       const actualOutput = app.execute(command);
       assert.equal(actualOutput, expectedOutput, `Command: ${command}`);
     })
@@ -167,7 +167,7 @@ describe("App", () => {
       { command: "BOOK 10:15 11:30 2", expectedOutput: "C-Cave" },
       { command: "BOOK 11:00 12:00 3", expectedOutput: "G-Mansion" },
       { command: "VACANCY 11:30 12:00", expectedOutput: "C-Cave D-Tower" },
-    ].map(({ command, expectedOutput }) => {
+    ].forEach(({ command, expectedOutput }) => {
       const actualOutput = app.execute(command);
       assert.equal(actualOutput, expectedOutput, `Command: ${command}`);
     })

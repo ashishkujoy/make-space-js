@@ -64,4 +64,20 @@ describe("App", () => {
       "NO_VACANT_ROOM",
     );
   });
+
+  it("should handle vacancy command", () => {
+    const app = App.createInstance(config);
+    app.execute("BOOK 10:00 11:45 4");
+    app.execute("BOOK 10:30 11:45 3");
+    app.execute("BOOK 10:30 11:45 14");
+
+    assert.deepStrictEqual(
+      app.execute("VACANCY 10:15 10:30"),
+      "C-Cave G-Mansion",
+    );
+    assert.deepStrictEqual(
+      app.execute("VACANCY 10:30 11:30"),
+      "NO_VACANT_ROOM",
+    );
+  });
 });

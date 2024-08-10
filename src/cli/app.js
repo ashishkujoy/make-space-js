@@ -28,6 +28,10 @@ export class App {
       case CommandType.Book: {
         const booking = this.manager.book(command.teamSize, timeSlot);
         return booking.success ? booking.roomName : "NO_VACANT_ROOM";
+      };
+      case CommandType.Vacancy: {
+        const rooms = this.manager.vacancy(timeSlot);
+        return rooms.join(" ") || "NO_VACANT_ROOM";
       }
     }
   }

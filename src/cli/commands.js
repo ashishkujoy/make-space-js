@@ -48,16 +48,14 @@ export const parseCommand = (rawCommand) => {
     return {
       type: CommandType.Book,
       teamSize: parseTeamSize(teamSize),
-      startTime: parseTime(startTime),
-      endTime: parseTime(endTime),
+      timeSlot,
     }
   }
 
   if (commandType === CommandType.Vacancy) {
     return {
       type: CommandType.Vacancy,
-      startTime: parseTime(startTime),
-      endTime: parseTime(endTime),
+      timeSlot
     }
   }
 }

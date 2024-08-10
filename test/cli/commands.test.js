@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { Time } from "../../src/domain/time_slot.js";
+import { Time, TimeSlot } from "../../src/domain/time_slot.js";
 import { parseCommand, CommandType, parseTime } from "../../src/cli/commands.js";
 import { ParseError } from "../../src/cli/parse_error.js";
 
@@ -109,8 +109,7 @@ describe("Command", () => {
           command,
           {
             type: CommandType.Book,
-            startTime: new Time(14, 15),
-            endTime: new Time(16, 0),
+            timeSlot: new TimeSlot(new Time(14, 15), new Time(16, 0)),
             teamSize: 12,
           }
         )
@@ -140,8 +139,7 @@ describe("Command", () => {
           command,
           {
             type: CommandType.Vacancy,
-            startTime: new Time(14, 30),
-            endTime: new Time(15, 0),
+            timeSlot: new TimeSlot(new Time(14, 30), new Time(15, 0)),
           }
         );
       });

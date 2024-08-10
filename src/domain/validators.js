@@ -5,6 +5,11 @@ export default class MeetingRoomValidator {
     this.config = config;
   }
 
+  validate(teamSize, timeSlot) {
+    this.validateTeamSize(teamSize);
+    this.validateTimeSlot(timeSlot);
+  }
+
   validateTeamSize(teamSize) {
     if (!this.#isValidTeamSize(teamSize)) {
       throw new InvalidTeamSizeError(teamSize);
@@ -25,6 +30,7 @@ export default class MeetingRoomValidator {
   #isValidTimeSlot(timeSlot) {
     if (timeSlot.isSpanningMultipleDays()) return false;
     if (!this.#isFollowingBookingInterval(timeSlot)) return false;
+    if (timeSlot.overlapsWithAny(this.config.bufferTime)) return false;
     if (this.#isOverlappingWithShutoffSlot(timeSlot)) return false;
     return true;
   }

@@ -16,6 +16,7 @@ describe("Meeting Room Manager", () => {
     maxRoomOccupancy: 20,
     bookingIntervalInMinutes: 15,
     shutoffSlot: new TimeSlot(new Time(23, 45), new Time(0, 0)),
+    bufferTime,
   };
 
   const validator = new MeetingRoomValidator(bookingRules);
@@ -62,8 +63,10 @@ describe("Meeting Room Manager", () => {
       let timeSlotQuery = undefined;
 
       const manager = new MeetingRoomManager(createMeetingRooms(), {
-        validateTimeSlot: (timeSlot) => timeSlotQuery = timeSlot,
-        validateTeamSize: (teamSize) => teamSizeQuery = teamSize,
+        validate: (teamSize, timeSlot) => {
+          timeSlotQuery = timeSlot;
+          teamSizeQuery = teamSize;
+        },
       });
       const timeSlot = new TimeSlot(new Time(10, 0), new Time(10, 45))
       manager.book(3, timeSlot);

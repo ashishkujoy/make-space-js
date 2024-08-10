@@ -8,8 +8,7 @@ export class MeetingRoomManager {
 
   book(teamSize, timeSlot) {
     try {
-      this.validator.validateTeamSize(teamSize);
-      this.validator.validateTimeSlot(timeSlot);
+      this.validator.validate(teamSize, timeSlot);
     } catch (error) {
       return { success: false, roomName: undefined, error }
     }

@@ -1,4 +1,4 @@
-import { InvalidTeamSizeError, InvalidTimeSlotError } from "../domain/errors.js";
+import { NoVacantRoomError } from "../domain/errors.js";
 import MeetingRoom from "../domain/meeting_room.js";
 import { MeetingRoomManager } from "../domain/meeting_room_manager.js";
 import MeetingRoomValidator from "../domain/validators.js";
@@ -10,30 +10,38 @@ export class App {
   }
 
   execute(rawCommand) {
-    let command;
     try {
-      command = parseCommand(rawCommand);
+      return this.#executeCommand(parseCommand(rawCommand));
     } catch {
       return "INCORRECT_INPUT";
     }
-    return this.#executeCommand(command);
   }
 
   #executeCommand(command) {
     switch (command.type) {
-      case CommandType.Book: {
-        const booking = this.manager.book(command.teamSize, command.timeSlot);
-        if (booking.success) return booking.roomName;
-        if (booking.error instanceof InvalidTeamSizeError || booking.error instanceof InvalidTimeSlotError) {
-          return "INCORRECT_INPUT";
-        }
-        return "NO_VACANT_ROOM";
-      };
-      case CommandType.Vacancy: {
-        const rooms = this.manager.vacancy(command.timeSlot);
-        return rooms.join(" ") || "NO_VACANT_ROOM";
-      }
+      case CommandType.Book: return this.#executeBookingCommand(command);
+      case CommandType.Vacancy: return this.#executeVacancyCommand(command);
     }
+  }
+
+  #executeVacancyCommand(command) {
+    const rooms = this.manager.vacancy(command.timeSlot);
+    return rooms.join(" ") || "NO_VACANT_ROOM";
+  }
+
+  #executeBookingCommand(command) {
+    const {
+      success,
+      error,
+      roomName
+    } = this.manager.book(command.teamSize, command.timeSlot);
+
+    if (success) return roomName;
+    return this.#isNoVaccantRoomError(error) ? "NO_VACANT_ROOM" : "INCORRECT_INPUT";
+  }
+
+  #isNoVaccantRoomError(error) {
+    return error instanceof NoVacantRoomError;
   }
 
   static createInstance(config) {
@@ -41,7 +49,6 @@ export class App {
       return new MeetingRoom(
         room.name,
         room.capacity,
-        config.bufferTime,
       );
     });
 
@@ -50,6 +57,7 @@ export class App {
       maxRoomOccupancy: config.maxRoomOccupancy,
       bookingIntervalInMinutes: config.bookingIntervalInMinutes,
       shutoffSlot: config.shutoffSlot,
+      bufferTime: config.bufferTime,
     };
 
     const validator = new MeetingRoomValidator(bookingRules);

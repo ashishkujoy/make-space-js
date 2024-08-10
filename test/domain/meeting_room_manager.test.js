@@ -45,19 +45,16 @@ describe("Meeting Room Manager", () => {
     });
 
     it("should use validator to validate timeslot and teamsize", () => {
-      let teamSizeQuery = undefined;
       let timeSlotQuery = undefined;
 
       const manager = new MeetingRoomManager(createMeetingRooms(), {
-        validate: (teamSize, timeSlot) => {
+        validate: (timeSlot) => {
           timeSlotQuery = timeSlot;
-          teamSizeQuery = teamSize;
         },
       });
       const timeSlot = new TimeSlot(new Time(10, 0), new Time(10, 45))
       manager.book(3, timeSlot);
 
-      assert.equal(teamSizeQuery, 3);
       assert.deepStrictEqual(timeSlotQuery, timeSlot);
     });
   });

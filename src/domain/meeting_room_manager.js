@@ -7,7 +7,7 @@ class MeetingRoomManager {
   }
 
   book(teamSize, timeSlot) {
-    this.validator.validate(teamSize, timeSlot);
+    this.validator.validate(timeSlot);
 
     for (const room of this.meetingRooms) {
       try {
@@ -23,7 +23,7 @@ class MeetingRoomManager {
 
   vacancy(timeSlot) {
     try {
-      this.validator.validateTimeSlot(timeSlot);
+      this.validator.validate(timeSlot);
     } catch {
       return [];
     }

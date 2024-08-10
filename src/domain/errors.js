@@ -25,16 +25,10 @@ class InvalidTimeSlotError extends Error {
   }
 }
 
-class InvalidTeamSizeError extends Error {
-  constructor(teamSize) {
-    super(`Invalid teamsize ${teamSize}`);
-  }
-}
 
 module.exports = {
   NotEnoughRoomCapacityError,
   TimeSlotNotAvailableError,
   NoVacantRoomError,
   InvalidTimeSlotError,
-  InvalidTeamSizeError,
 };

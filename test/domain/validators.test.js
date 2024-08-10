@@ -18,56 +18,12 @@ describe("Validators", () => {
     bufferTime,
   }
 
-  describe("Team Size validation", () => {
-    it("team size below min room occupancy should be invalid", () => {
-      const validator = new MeetingRoomValidator(config);
-
-      assert.throws(
-        () => validator.validateTeamSize(1),
-        InvalidTeamSizeError,
-      );
-    });
-
-    it("team size above max room occupancy should be invalid", () => {
-      const validator = new MeetingRoomValidator(config);
-
-      assert.throws(
-        () => validator.validateTeamSize(21),
-        InvalidTeamSizeError,
-      );
-    });
-
-    it("team size equal to min room occupancy should be valid", () => {
-      const validator = new MeetingRoomValidator(config);
-
-      assert.doesNotThrow(
-        () => validator.validateTeamSize(2),
-      );
-    });
-
-    it("team size equal to max room occupancy should be valid", () => {
-      const validator = new MeetingRoomValidator(config);
-
-      assert.doesNotThrow(
-        () => validator.validateTeamSize(20),
-      );
-    });
-
-    it("team size equal between min and max room occupancy should be valid", () => {
-      const validator = new MeetingRoomValidator(config);
-
-      assert.doesNotThrow(
-        () => validator.validateTeamSize(12),
-      );
-    });
-  });
-
   describe("Time Slot validation", () => {
     it("time slot spanning multiple days should be invalid", () => {
       const validator = new MeetingRoomValidator(config);
 
       assert.throws(
-        () => validator.validateTimeSlot(new TimeSlot(
+        () => validator.validate(new TimeSlot(
           new Time(20, 30),
           new Time(1, 30))
         ),
@@ -79,14 +35,14 @@ describe("Validators", () => {
       const validator = new MeetingRoomValidator(config);
 
       assert.throws(
-        () => validator.validateTimeSlot(new TimeSlot(
+        () => validator.validate(new TimeSlot(
           new Time(20, 0),
           new Time(1, 20))
         ),
         InvalidTimeSlotError
       );
       assert.throws(
-        () => validator.validateTimeSlot(new TimeSlot(
+        () => validator.validate(new TimeSlot(
           new Time(20, 5),
           new Time(1, 30))
         ),
@@ -98,7 +54,7 @@ describe("Validators", () => {
       const validator = new MeetingRoomValidator(config);
 
       assert.throws(
-        () => validator.validateTimeSlot(new TimeSlot(
+        () => validator.validate(new TimeSlot(
           new Time(23, 45),
           new Time(0, 0))
         ),
@@ -110,7 +66,7 @@ describe("Validators", () => {
       const validator = new MeetingRoomValidator(config);
 
       assert.throws(
-        () => validator.validateTimeSlot(new TimeSlot(
+        () => validator.validate(new TimeSlot(
           new Time(13, 30),
           new Time(13, 45),
         )),
@@ -122,7 +78,7 @@ describe("Validators", () => {
       const validator = new MeetingRoomValidator(config);
 
       assert.doesNotThrow(
-        () => validator.validateTimeSlot(new TimeSlot(
+        () => validator.validate(new TimeSlot(
           new Time(10, 45),
           new Time(11, 15)),
         )

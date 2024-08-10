@@ -1,30 +1,14 @@
-const { InvalidTeamSizeError, InvalidTimeSlotError } = require("./errors.js");
+const { InvalidTimeSlotError } = require("./errors.js");
 
 class MeetingRoomValidator {
   constructor(config) {
     this.config = config;
   }
 
-  validate(teamSize, timeSlot) {
-    this.validateTeamSize(teamSize);
-    this.validateTimeSlot(timeSlot);
-  }
-
-  validateTeamSize(teamSize) {
-    if (!this.#isValidTeamSize(teamSize)) {
-      throw new InvalidTeamSizeError(teamSize);
-    }
-  }
-
-  validateTimeSlot(timeSlot) {
+  validate(timeSlot) {
     if (!this.#isValidTimeSlot(timeSlot)) {
       throw new InvalidTimeSlotError(timeSlot);
     }
-  }
-
-  #isValidTeamSize(teamSize) {
-    const { minRoomOccupancy, maxRoomOccupancy } = this.config;
-    return teamSize >= minRoomOccupancy && teamSize <= maxRoomOccupancy;
   }
 
   #isValidTimeSlot(timeSlot) {

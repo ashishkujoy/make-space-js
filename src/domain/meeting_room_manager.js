@@ -32,9 +32,6 @@ export class MeetingRoomManager {
 
 
   #isOverlappingWithShutoffSlot(timeSlot) {
-    console.log("---------Validating Shutoff slot------------");
-    console.log(`Shutoff timing: ${this.bookingRules.shutoffSlot}`);
-    console.log(`Time Slot: ${timeSlot}`);
     return this.bookingRules.shutoffSlot.overlaps(timeSlot);
   }
 

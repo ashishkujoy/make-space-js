@@ -2,7 +2,7 @@ import { MeetingRoomManager } from "../../src/domain/meeting_room_manager.js";
 import MeetingRoom from "../../src/domain/meeting_room.js"
 import { Time, TimeSlot } from "../../src/domain/time_slot.js"
 import { assert } from "chai";
-import { InvalidTeamSize, InvalidTimeSlot, NoVacantRoom } from "../../src/domain/errors.js";
+import { InvalidTeamSizeError, NoVacantRoomError, InvalidTimeSlotError } from "../../src/domain/errors.js";
 
 describe("Meeting Room Manager", () => {
   const bufferTime = [
@@ -65,7 +65,7 @@ describe("Meeting Room Manager", () => {
         {
           success: false,
           roomName: undefined,
-          error: new NoVacantRoom(),
+          error: new NoVacantRoomError(),
         }
       );
     });
@@ -80,7 +80,7 @@ describe("Meeting Room Manager", () => {
         {
           success: false,
           roomName: undefined,
-          error: new InvalidTeamSize(1),
+          error: new InvalidTeamSizeError(1)
         }
       );
     });
@@ -95,7 +95,7 @@ describe("Meeting Room Manager", () => {
         {
           success: false,
           roomName: undefined,
-          error: new InvalidTeamSize(21),
+          error: new InvalidTeamSizeError(21)
         }
       );
     });
@@ -110,7 +110,7 @@ describe("Meeting Room Manager", () => {
         {
           success: false,
           roomName: undefined,
-          error: new InvalidTimeSlot(timeSlot),
+          error: new InvalidTimeSlotError(timeSlot),
         }
       );
     });
@@ -125,7 +125,7 @@ describe("Meeting Room Manager", () => {
         {
           success: false,
           roomName: undefined,
-          error: new InvalidTimeSlot(timeSlot),
+          error: new InvalidTimeSlotError(timeSlot),
         }
       );
     });
@@ -140,7 +140,7 @@ describe("Meeting Room Manager", () => {
         {
           success: false,
           roomName: undefined,
-          error: new InvalidTimeSlot(timeSlot),
+          error: new InvalidTimeSlotError(timeSlot),
         }
       );
     });
@@ -155,7 +155,7 @@ describe("Meeting Room Manager", () => {
         {
           success: false,
           roomName: undefined,
-          error: new InvalidTimeSlot(timeSlot),
+          error: new InvalidTimeSlotError(timeSlot),
         }
       );
     });

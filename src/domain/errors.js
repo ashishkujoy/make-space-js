@@ -13,19 +13,19 @@ export class TimeSlotNotAvailableError extends Error {
   }
 }
 
-export class NoVacantRoom extends Error {
+export class NoVacantRoomError extends Error {
   constructor() {
     super("No vacant room");
   }
 }
 
-export class InvalidTimeSlot extends Error {
+export class InvalidTimeSlotError extends Error {
   constructor(timeSlot) {
     super(`Invalid timeslot ${timeSlot}`);
   }
 }
 
-export class InvalidTeamSize extends Error {
+export class InvalidTeamSizeError extends Error {
   constructor(teamSize) {
     super(`Invalid teamsize ${teamSize}`);
   }

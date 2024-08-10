@@ -1,4 +1,4 @@
-import { InvalidTeamSize, InvalidTimeSlot, NoVacantRoom } from "./errors.js";
+import { InvalidTeamSizeError, InvalidTimeSlotError, NoVacantRoomError } from "./errors.js";
 
 export class MeetingRoomManager {
   constructor(meetingRooms, bookingRules) {
@@ -27,8 +27,8 @@ export class MeetingRoomManager {
   }
 
   #validateRequest(teamSize, timeSlot) {
-    if (!this.#isAccommodableTeamSize(teamSize)) return new InvalidTeamSize(teamSize);
-    if (!this.#isValidTimeSlot(timeSlot)) return new InvalidTimeSlot(timeSlot);
+    if (!this.#isAccommodableTeamSize(teamSize)) return new InvalidTeamSizeError(teamSize);
+    if (!this.#isValidTimeSlot(timeSlot)) return new InvalidTimeSlotError(timeSlot);
   }
 
   #isValidTimeSlot(timeSlot) {
@@ -64,7 +64,7 @@ export class MeetingRoomManager {
     return {
       success: false,
       roomName: undefined,
-      error: new NoVacantRoom(),
+      error: new NoVacantRoomError(),
     }
   }
 }

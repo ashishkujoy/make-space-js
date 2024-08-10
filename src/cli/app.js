@@ -1,4 +1,4 @@
-import { InvalidTeamSize, InvalidTimeSlot } from "../domain/errors.js";
+import { InvalidTeamSizeError, InvalidTimeSlotError } from "../domain/errors.js";
 import MeetingRoom from "../domain/meeting_room.js";
 import { MeetingRoomManager } from "../domain/meeting_room_manager.js";
 import { CommandType, parseCommand } from "./commands.js";
@@ -23,7 +23,7 @@ export class App {
       case CommandType.Book: {
         const booking = this.manager.book(command.teamSize, command.timeSlot);
         if (booking.success) return booking.roomName;
-        if (booking.error instanceof InvalidTeamSize || booking.error instanceof InvalidTimeSlot) {
+        if (booking.error instanceof InvalidTeamSizeError || booking.error instanceof InvalidTimeSlotError) {
           return "INCORRECT_INPUT";
         }
         return "NO_VACANT_ROOM";

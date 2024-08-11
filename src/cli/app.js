@@ -4,6 +4,11 @@ const MeetingRoomManager = require("../domain/meeting_room_manager.js");
 const MeetingRoomValidator = require("../domain/validators.js");
 const { CommandType, parseCommand } = require("./commands.js");
 
+const ErrorMessages = {
+  IncorrectInput: "INCORRECT_INPUT",
+  NoVacantRoom: "NO_VACANT_ROOM",
+}
+
 class App {
   constructor(manager) {
     this.manager = manager;
@@ -13,7 +18,7 @@ class App {
     try {
       return this.#executeCommand(parseCommand(rawCommand));
     } catch (e) {
-      return "INCORRECT_INPUT";
+      return ErrorMessages.IncorrectInput;
     }
   }
 
@@ -26,14 +31,14 @@ class App {
 
   #executeVacancyCommand(command) {
     const rooms = this.manager.vacancy(command.timeSlot);
-    return rooms.join(" ") || "NO_VACANT_ROOM";
+    return rooms.join(" ") || ErrorMessages.NoVacantRoom;
   }
 
   #executeBookingCommand(command) {
     try {
       return this.manager.book(command.teamSize, command.timeSlot);
     } catch (e) {
-      return this.#isNoVaccantRoomError(e) ? "NO_VACANT_ROOM" : "INCORRECT_INPUT";
+      return this.#isNoVaccantRoomError(e) ? ErrorMessages.NoVacantRoom : ErrorMessages.IncorrectInput;
     }
   }
 

@@ -25,11 +25,15 @@ class TimeSlot {
   }
 
   overlaps(otherTimeSlot) {
-    if (this.equals(otherTimeSlot)) return true;
-    const startTimeOverlaps = this.contains(otherTimeSlot.start) || otherTimeSlot.contains(this.start);
-    const endTimeOverlaps = this.contains(otherTimeSlot.end) || otherTimeSlot.contains(this.end);
+    return this.equals(otherTimeSlot) || this.#startTimeOverlaps(otherTimeSlot) || this.#endTimeOverlaps(otherTimeSlot);
+  }
 
-    return startTimeOverlaps || endTimeOverlaps;
+  #startTimeOverlaps(otherTimeSlot) {
+    return this.contains(otherTimeSlot.start) || otherTimeSlot.contains(this.start);
+  }
+
+  #endTimeOverlaps(otherTimeSlot) {
+    return this.contains(otherTimeSlot.end) || otherTimeSlot.contains(this.end);
   }
 
   overlapsWithAny(timeSlots) {
